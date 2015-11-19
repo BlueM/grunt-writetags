@@ -82,11 +82,12 @@ Default value: [empty string]
 If not empty, this prefix is prepended to the filesystem path specified by `options.dest` in the `src` and `href` attribute values of the `<script>` and `<link>` tags. For instance, setting this option to “/” will guarantee that paths to the JavaScript and CSS files are absolute.
 
 
-## Release History
-* 11/19/2015 - 0.1.0: First release. Very simple, but provides what I need.
-
-
 ### Tests
 
 There are no tests. This task is so primitive (currently, the core of the task is 1 function containing roughly 20 lines of code) that I don’t see the necessity.
+
+
+## Release History
+* 11/19/2015 - 0.1.0: First release. Very simple, but provides what I need.
+
 
