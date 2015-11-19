@@ -1,8 +1,8 @@
 {
   "name": "grunt-writetags",
   "description": "Writes tags for JS  and/or CSS files to a file",
-  "version": "0.1.0",
-  "homepage": "",
+  "version": "0.1.1",
+  "homepage": "https://github.com/BlueM/grunt-writetags",
   "author": {
     "name": "Carsten Blüm",
     "email": "carsten@bluem.net",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git://github.com/BlueM/grunt-writetags"
   },
   "bugs": {
-    "url": ""
+    "url": "https://github.com/BlueM/grunt-writetags/issues"
   },
   "licenses": [
     {
       "type": "MIT",
-      "url": ""
+      "url": "https://github.com/BlueM/grunt-writetags/blob/master/LICENSE-MIT"
     }
   ],
   "engines": {
