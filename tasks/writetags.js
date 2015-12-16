@@ -15,15 +15,43 @@ module.exports = function (grunt) {
         'Writes tags for JS  and/or CSS files to a file',
         function () {
 
-            var path      = require('path');
-            var paths     = grunt.config.get(this.name + '.' + this.target + '.paths');
-            var dest      = grunt.config.get(this.name + '.' + this.target + '.dest');
-            var absPrefix = grunt.config.get(this.name + '.' + this.target + '.prefix');
-            var destPath  = path.dirname(dest);
+            var prefix, replace;
+            var path = require('path');
+            var paths = grunt.config.get(this.name + '.' + this.target + '.paths');
+            var dest = grunt.config.get(this.name + '.' + this.target + '.dest');
+            var destPath = path.dirname(dest);
+
+            if (grunt.config.get(this.name + '.' + this.target + '.prefix')) {
+                prefix = grunt.config.get(this.name + '.' + this.target + '.prefix');
+            } else if (grunt.config.get(this.name + '.options.prefix')) {
+                prefix = grunt.config.get(this.name + '.options.prefix');
+            } else {
+                prefix = '';
+            }
+
+            if (grunt.config.get(this.name + '.' + this.target + '.replace')) {
+                replace = grunt.config.get(this.name + '.' + this.target + '.replace');
+            } else if (grunt.config.get(this.name + '.options.replace')) {
+                replace = grunt.config.get(this.name + '.options.replace');
+            } else {
+                replace = null;
+            }
+
+            if (replace && '[object Object]' !== Object.prototype.toString.call(replace)) {
+                grunt.fail.warn('Option “replace” is expected to be an object');
+                replace = null;
+            }
 
             var html = paths.map(
                 function (configuredPath) {
-                    var usePath = absPrefix ? absPrefix + configuredPath : path.relative(destPath, configuredPath);
+
+                    var usePath = prefix ? prefix + configuredPath : path.relative(destPath, configuredPath);
+
+                    if (replace) {
+                        Object.keys(replace).forEach(function(key) {
+                            usePath = usePath.replace(key, replace[key]);
+                        });
+                    }
 
                     if ('.js' === usePath.substr(-3).toLowerCase()) {
                         return '<script src="' + usePath + '"></script>\n';

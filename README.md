@@ -43,6 +43,9 @@ In your project's Gruntfile, add a section named `writetags` to the object passe
 ```js
 grunt.initConfig({
     writetags: {
+        options {
+            'prefix': '/foo'
+        }
         dev_js:  {
             paths:  ['inc/scripts1.js', 'inc/scripts2.js'],
             dest:   'templates/script-tags-dev.html',
@@ -54,7 +57,7 @@ grunt.initConfig({
         dist_all:  {
             paths:  ['inc/input.js', 'inc/styles-compiled.css'],
             dest:   'templates/js-css-tags-prod.html',
-            prefix: '/'
+            prefix: '/bar'
         },
     }
 });
@@ -65,29 +68,40 @@ grunt.initConfig({
 
 ### Options
 
-#### options.paths
+#### subtask.paths
 Type: `Array`
 
 An array of filesystem paths, relative to the directory containing `Gruntfile.js`
 
-#### options.dest
+#### subtask.dest
 Type: `String`
 
 An filesystem paths, relative to the directory containing `Gruntfile.js`
 
-#### options.absPrefix
+#### options.prefix
 Type: `String`
 Default value: [empty string]
 
 If not empty, this prefix is prepended to the filesystem path specified by `options.dest` in the `src` and `href` attribute values of the `<script>` and `<link>` tags. For instance, setting this option to “/” will guarantee that paths to the JavaScript and CSS files are absolute.
 
+The prefix can either be defined in the options (global for all subtasks) and/or defined for single subtask(s). If both are the defined, the subtask-specific prefix wins.
+
+#### options.replace
+Type: `Object`
+Default value: null
+
+If defined, this is an object whose keys (each expected to be a string) are replaced with the corresponding values (also expected to be strings) in the resulting paths. This setting can be used for arbitrary tweaking of the output paths.
+
+Replacements can either be defined in the options (global for all subtasks) and/or defined for single subtask(s). If both are the defined, the subtask-specific replacements win.
+
 
 ### Tests
 
-There are no tests. This task is so primitive (currently, the core of the task is 1 function containing roughly 20 lines of code) that I don’t see the necessity.
+There are no tests. This task is so simple (currently, roughly 50 lines of code) that I don’t see the necessity.
 
 
 ## Release History
+* 12/16/2015 - 0.2.0: Added `replace`, improve Readme
+
+## Release History
 * 11/19/2015 - 0.1.0: First release. Very simple, but provides what I need.
-
-
