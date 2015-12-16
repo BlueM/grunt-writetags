@@ -1,7 +1,7 @@
 {
   "name": "grunt-writetags",
   "description": "Writes tags for JS  and/or CSS files to a file",
-  "version": "0.2",
+  "version": "0.2.0",
   "homepage": "https://github.com/BlueM/grunt-writetags",
   "author": {
     "name": "Carsten Blüm",
