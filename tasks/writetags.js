@@ -2,7 +2,7 @@
  * grunt-writetags
  * https://github.com/cb/grunt-contrib-writetags
  *
- * Copyright (c) 2015 Carsten Blüm
+ * Copyright (c) 2015-2016 Carsten Blüm
  * Licensed under the MIT license.
  */
 
@@ -12,30 +12,28 @@ module.exports = function (grunt) {
 
     grunt.registerMultiTask(
         'writetags',
-        'Writes tags for JS  and/or CSS files to a file',
+        'Writes tags for JS and/or CSS files to a file',
         function () {
 
-            var prefix, replace;
             var path = require('path');
             var paths = grunt.config.get(this.name + '.' + this.target + '.paths');
             var dest = grunt.config.get(this.name + '.' + this.target + '.dest');
             var destPath = path.dirname(dest);
 
-            if (grunt.config.get(this.name + '.' + this.target + '.prefix')) {
-                prefix = grunt.config.get(this.name + '.' + this.target + '.prefix');
-            } else if (grunt.config.get(this.name + '.options.prefix')) {
-                prefix = grunt.config.get(this.name + '.options.prefix');
-            } else {
-                prefix = '';
-            }
+            var getOption = function(optionName, defaultValue) {
+                if (grunt.config.get(this.name + '.' + this.target + '.' + optionName)) {
+                    return grunt.config.get(this.name + '.' + this.target + '.' + optionName);
+                }
+                if (grunt.config.get(this.name + '.options.' + optionName)) {
+                    return grunt.config.get(this.name + '.options.' + optionName);
+                }
+                return defaultValue;
+            }.bind(this);
 
-            if (grunt.config.get(this.name + '.' + this.target + '.replace')) {
-                replace = grunt.config.get(this.name + '.' + this.target + '.replace');
-            } else if (grunt.config.get(this.name + '.options.replace')) {
-                replace = grunt.config.get(this.name + '.options.replace');
-            } else {
-                replace = null;
-            }
+            var prefix = getOption('prefix', '');
+            var replace = getOption('replace', null);
+            var scriptTemplate = getOption('scriptTemplate', '<script src="{{path}}"></script>\n');
+            var styleTemplate = getOption('styleTemplate', '<link rel="stylesheet" href="{{path}}" />\n');
 
             if (replace && '[object Object]' !== Object.prototype.toString.call(replace)) {
                 grunt.fail.warn('Option “replace” is expected to be an object');
@@ -54,11 +52,11 @@ module.exports = function (grunt) {
                     }
 
                     if ('.js' === usePath.substr(-3).toLowerCase()) {
-                        return '<script src="' + usePath + '"></script>\n';
+                        return scriptTemplate.replace('{{path}}', usePath);
                     }
 
                     if ('.css' === usePath.substr(-4).toLowerCase()) {
-                        return '<link rel="stylesheet" href="' + usePath + '" />\n';
+                        return styleTemplate.replace('{{path}}', usePath);
                     }
 
                     grunt.fail.warn('Expected filenames to end with *.css or *.js, but got filename: ' + configuredPath);
