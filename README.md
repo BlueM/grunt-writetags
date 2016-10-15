@@ -43,27 +43,22 @@ In your project's Gruntfile, add a section named `writetags` to the object passe
 ```js
 grunt.initConfig({
     writetags: {
-        options {
+        options: {
             'prefix': '/foo'
+        },
+        dev:  {
+            paths:  ['inc/scripts1.js', 'inc/scripts2.js', 'inc/dev-scripts.js', 'inc/styles.css'],
+            dest:   'templates/assets-dev.html'
+        },
+        dist:  {
+            paths:  ['inc/scripts1.js', 'inc/scripts2.js', 'inc/styles.css'],
+            dest:   'templates/assets-dist.html'
         }
-        dev_js:  {
-            paths:  ['inc/scripts1.js', 'inc/scripts2.js'],
-            dest:   'templates/script-tags-dev.html',
-        },
-        dev_css: {
-            paths:  ['inc/styles1.css', 'inc/styles2.css'],
-            dest:   'templates/style-tags-dev.html',
-        },
-        dist_all:  {
-            paths:  ['inc/input.js', 'inc/styles-compiled.css'],
-            dest:   'templates/js-css-tags-prod.html',
-            prefix: '/bar'
-        },
     }
 });
 ```
 
-`writetags` is a multi-task, and in this example, there are three sub-tasks which you can invoke independently: two which write either JS or CSS tags, and one which writes both. (A setup like this would be rare in real life, but after all, this is simply an example.) Of course, usually this would be combined with the typical other asset handling steps, especially concatenation and minification (see info above for recommended tasks).
+`writetags` is a multi-task, and in this example, there are two sub-tasks “dev” and “dist” with basically the same files (which, in real life, one would probably not define literally, but via Grunt templates or a JS array), except “dev” adds a file not included in “dist”. Of course, usually this would be combined with the typical other asset handling steps, especially concatenation and minification (see info above for tasks I like to use with this one).
 
 
 ### Options
@@ -73,10 +68,30 @@ Type: `Array`
 
 An array of filesystem paths, relative to the directory containing `Gruntfile.js`
 
+
 #### subtask.dest
 Type: `String`
 
 An filesystem paths, relative to the directory containing `Gruntfile.js`
+
+
+#### subtask.scriptTemplate
+Type: `String`
+
+A template for the `<script>` tag(s) to be written, expected to contain a placeholder ``{{path}}`` for the path.
+
+Default value, if not specified: `<script src="{{path}}"></script>\n`
+
+For instance, can be used to add an attribute such as `async`.
+
+
+#### subtask.styleTemplate
+Type: `String`
+
+A template for the CSS `<link>` tag(s) to be written, expected to contain a placeholder ``{{path}}`` for the path.
+
+Default value, if not specified: `<link rel="stylesheet" href="{{path}}" />\n`
+
 
 #### options.prefix
 Type: `String`
@@ -101,7 +116,7 @@ There are no tests. This task is so simple (currently, roughly 50 lines of code)
 
 
 ## Release History
-* 12/16/2015 - 0.2.0: Added `replace`, improve Readme
 
-## Release History
+* 10/15/2016 - 0.3.0: Added `scriptTemplate` and `styleTemplate` options, removed errors in Readme.
+* 12/16/2015 - 0.2.0: Added `replace`, improve Readme
 * 11/19/2015 - 0.1.0: First release. Very simple, but provides what I need.
