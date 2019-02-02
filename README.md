@@ -2,6 +2,8 @@
 
 > Writes tags for JS and/or CSS files to a file
 
+**Please note: This package is no longer maintained.** Since I published the last version years ago, I have switched to Webpack and Parcel, which both are significantly less cumbersome to use than Grunt (at least for my use cases). However, this package does its job, and if it solves a problem you have, don’t hesitate to use it.
+
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
 
